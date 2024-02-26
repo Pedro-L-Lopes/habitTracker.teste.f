@@ -32,13 +32,13 @@ const HabitList = ({ date }: HabitListProps) => {
       });
   }, []);
 
+  const formattedDate = dayjs(date).format("YYYY-MM-DD");
+
   async function handleToggleHabit(habitId: string, date: string) {
     const isHabitAlreadyCompleted =
       habitsInfo!.completedHabits.includes(habitId);
 
-    const formattedDate = dayjs(date).format("YYYY-MM-DD");
-
-    await api.patch(`${habitId}/toggle?date=${formattedDate}`);
+    await api.patch(`${habitId}/toggle?date=${date}`);
 
     let completedHabits: string[] = [];
 
@@ -56,17 +56,13 @@ const HabitList = ({ date }: HabitListProps) => {
     });
   }
 
-  console.log(date);
-
   return (
     <div className="mt-6 flex flex-col gap-3">
       {habitsInfo?.possibleHabits.map((habit) => {
         return (
           <Checkbox.Root
             key={habit.id}
-            onCheckedChange={() =>
-              handleToggleHabit(habit.id, habit.created_at)
-            }
+            onCheckedChange={() => handleToggleHabit(habit.id, formattedDate)}
             checked={habitsInfo.completedHabits.includes(habit.id)}
             className="flex items-center gap-3 group focus:outline-none disabled:cursor-not-allowed"
           >
