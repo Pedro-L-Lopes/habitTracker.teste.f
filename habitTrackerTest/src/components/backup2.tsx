@@ -4,10 +4,9 @@ import HabitDay from "./HabitDay";
 import { generateDatesFromYearBeginning } from "../utils/generate-dates-from-year-beginning";
 import dayjs from "dayjs";
 // Api
-import { api } from "../lib/axios";
+import { api } from "../lib/config";
 // hooks
 import { useEffect, useState } from "react";
-import Summary from "./Summary";
 //Styles
 import "../styles/scrollBar.css";
 
@@ -18,11 +17,22 @@ const summaryDates = generateDatesFromYearBeginning();
 const minimumSummaryDatesSize = 18 * 7; // 18 weeks
 const amountOfDaysToFill = minimumSummaryDatesSize - summaryDates.length;
 
-type SummaryTableProps = {
-  summary?: Summary;
-};
+type Summary = {
+  id: string;
+  date: string;
+  amount: number;
+  completed: number;
+}[];
 
-const SummaryTable = ({ summary }: SummaryTableProps) => {
+const SummaryTable = () => {
+  const [summary, setSummary] = useState<Summary>([]);
+
+  useEffect(() => {
+    api.get("summary").then((response) => {
+      setSummary(response.data);
+    });
+  }, []);
+
   return (
     <div className="overflow-x-scroll p-1 custom-scrollbar">
       <div className="w-full flex">
