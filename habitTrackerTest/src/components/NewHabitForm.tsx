@@ -1,7 +1,11 @@
 import { FaCheck } from "react-icons/fa6";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import { FormEvent, useState } from "react";
-import { api } from "../lib/axios";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "../hooks/useAppDispatch";
+import { RootState } from "../store";
+import { postHabit } from "../slices/habitSlice";
+import { api } from "../lib/config";
 
 const availableWeekDays = [
   "Domingo",
@@ -14,17 +18,23 @@ const availableWeekDays = [
 ];
 
 const NewHabitForm = () => {
+  const dispatch = useAppDispatch();
+
+  const { habit } = useSelector((state: RootState) => state.habit);
+
   const [title, setTitle] = useState("");
   const [weekDays, setWeekDays] = useState<number[]>([]);
 
-  console.log(title, weekDays);
-
-  async function createNewHabit(event: FormEvent) {
-    event.preventDefault();
+  async function createNewHabit(e: FormEvent) {
+    e.preventDefault();
 
     if (!title || weekDays.length === 0) {
       return;
     }
+
+    const habitData = { title, weekDays };
+
+    // await dispatch(postHabit(habitData));
 
     await api.post("", {
       title,

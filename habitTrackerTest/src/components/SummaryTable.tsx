@@ -1,14 +1,7 @@
-// Components
 import HabitDay from "./HabitDay";
-// Functions
 import { generateDatesFromYearBeginning } from "../utils/generate-dates-from-year-beginning";
 import dayjs from "dayjs";
-// Api
-import { api } from "../lib/axios";
-// hooks
-import { useEffect, useState } from "react";
 import Summary from "./Summary";
-//Styles
 import "../styles/scrollBar.css";
 
 const weekDays = ["D", "S", "T", "Q", "Q", "S", "S"];
